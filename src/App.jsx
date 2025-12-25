@@ -1,12 +1,15 @@
-import { TodoContext,TodoProvider } from "./context/TodoContext"
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import { TodoProvider } from "./context/TodoContext";
 
-function App(){
-  return(
+const App = () => {
+  return (
     <TodoProvider>
-      <TodoContext/>
-      <h1>hey todo</h1>
+      <h1>Todo App</h1>
+      <TodoForm />
+      <TodoList />
     </TodoProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

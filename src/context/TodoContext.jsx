@@ -1,19 +1,28 @@
-import { Children, createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react";
 
 export const TodoContext = createContext();
 
-export const TodoProvider = ({ Children }) => {
-    console.log("hey")
-    const [todos, setTodo] = (() => {
-        const storedTodo = localStorage.getItem("todos");
-        return storedTodo ? JSON.parse(storedTodo) : []
-    })
+export const TodoProvider = ({ children }) => {
+  const [todos, setTodos] = useState(() => {
+    const storedTodos = localStorage.getItem("todos");
+    return storedTodos ? JSON.parse(storedTodos) : [];
+  });
 
-    useEffect(()=>{
-        localStorage.setItem("todos",JSON.stringify("todos"))
-    },[todos])
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
-    return <>
-    <h1><i>hey </i></h1>
-    </>
-}
+  const addTodo = (text) => {
+    setTodos([...todos, { id: Date.now(), text }]);
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  return (
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo }}>
+      {children}
+    </TodoContext.Provider>
+  );
+};
